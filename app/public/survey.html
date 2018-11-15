@@ -22,12 +22,12 @@
                 <form>
                     <div class="form-group">
                         <label for="nameFormInput">Name (Required)</label>
-                        <input type="text" class="form-control" id="nameFormInput" placeholder="Enter name">
+                        <input type="text" class="form-control" id="nameFormInput" placeholder="Enter name" required>
                     </div>
 
                     <div class="form-group">
                         <label for="photoFormInput">Link to Photo Image (Required)</label>
-                        <input type="text" class="form-control" id="photoFormInput" placeholder="Enter link">
+                        <input type="text" class="form-control" id="photoFormInput" placeholder="Enter link" required>
                     </div>
                 </form>
                 <hr class="my-4">
@@ -203,7 +203,7 @@
         $.post("/api/friends", newFriends,
             function(data) {
                 if (data) {
-                    console.log(newFriends);
+                    console.log("User Input: " + newFriends);
                     clearForm();
                 }          
         });
@@ -232,15 +232,14 @@
             .then(function(friendData) {
 
                 // Log the friendData to console to show up as an object
-                console.log(friendData);
-                console.log("------------------------------------");
+                console.log("All friends data from Friend API: " + friendData);
 
                 // Array that holds the final Total Difference Scores between the user and each of the friends in the friends API
                 var comparisonArr = [];
 
                 // Loop through and capture each of the friend scores within the friends API into an array
                 for (var i = 0; i < friendData.length; i++) {
-                    console.log(friendData[i].friendScores)
+                    //console.log(friendData[i].friendScores)
                     var userAnsArr = userAns;
                     var friendAnsArr = friendData[i].friendScores;
                     
@@ -250,14 +249,14 @@
                         diffArr.push(Math.abs(userAnsArr[j] - friendAnsArr[j]));
                     };
 
-                    console.log(diffArr);
+                    //console.log(diffArr);
 
                     // Summation of the differences to calculate the overall Total Difference score between the user and friends within the friends API
                     var totalDiff = diffArr.reduce(add, 0);
                     function add(a, b) {
                         return a + b;
                     };
-                    console.log(totalDiff);
+                    console.log("Total Difference Score: " + totalDiff);
                     
                     // Pushing the final Total Difference score to an array
                     comparisonArr.push(totalDiff);
@@ -266,24 +265,20 @@
                 // Determining closest match to the user with the least amount of difference (in the final array of scores) and determining the index of the match that's not 0
                 function indexOfSmallest(comparisonArr) {
                     var min = Math.min.apply(null, comparisonArr);
-                    console.log(min);
-                    console.log(friendData[min]);
-                    console.log(friendData[min].friendName);
-                    console.log(friendData[min].friendPhoto);
+                    console.log("Index of best match: " + min);
+                    console.log("Best Matched Friend: " + friendData[min]);
+                    console.log("Best Matched Friend name: " + friendData[min].friendName);
+                    console.log("Best Matched Friend image: " + friendData[min].friendPhoto);
 
                     // Appending friend match result to modal
                     $("#friendModalMatch").append(friendData[min].friendName);
                     $("#friendModalImgLink").attr("src", friendData[min].friendPhoto);  
 
                 };
-                console.log(comparisonArr);
+
+                //console.log("TotalcomparisonArr);
                 indexOfSmallest (comparisonArr);
 
-                
-                
-            
-            
-                
             });
         };
     });
