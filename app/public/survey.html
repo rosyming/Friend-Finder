@@ -19,20 +19,20 @@
                 <hr class="my-4">
                 <p class="h2">About You</p>
 
-                <form>
+                <form id="user-form">
                     <div class="form-group">
                         <label for="nameFormInput">Name (Required)</label>
-                        <input type="text" class="form-control" id="nameFormInput" placeholder="Enter name" required>
+                        <input type="text" class="form-control" id="nameFormInput" placeholder="Enter name" name="nameFormInput" required>
                     </div>
 
                     <div class="form-group">
                         <label for="photoFormInput">Link to Photo Image (Required)</label>
-                        <input type="text" class="form-control" id="photoFormInput" placeholder="Enter link" required>
+                        <input type="text" class="form-control" id="photoFormInput" placeholder="Enter link"
+                        name="photoFormInput" required>
                     </div>
-                </form>
+                
                 <hr class="my-4">
 
-                <form>
                     <div class="form-group">
                         <label for="Q1"><h5>Question 1:</h5> You would like to be famous.</label>
                         <select class="form-control" id="Q1">
@@ -42,6 +42,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q2"><h5>Question 2:</h5> Before making a phone call, you rehearse what you are going to say.</label>
                         <select class="form-control" id="Q2">
@@ -51,6 +52,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q3"><h5>Question 3:</h5> You have a secret hunch about how you will die.</label>
                         <select class="form-control" id="Q3">
@@ -60,6 +62,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q4"><h5>Question 4:</h5> If there was a crystal ball that could tell you the truth about yourself, your life, the future, or anything else, you would want to know what it tells you.</label>
                         <select class="form-control" id="Q4">
@@ -69,6 +72,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q5"><h5>Question 5:</h5> You feel that your childhood was happier than most other people's.</label>
                         <select class="form-control" id="Q5">
@@ -78,6 +82,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q6"><h5>Question 6:</h5> Your house, containing everything you own, catches fire. After saving your loved ones and pets, you will make a final dash to save one item.</label>
                         <select class="form-control" id="Q6">
@@ -87,6 +92,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q7"><h5>Question 7:</h5> You wish that you could have super powers.</label>
                         <select class="form-control" id="Q7">
@@ -96,6 +102,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q8"><h5>Question 8:</h5> There's something you've dreamed of doing for a long time, but haven't had the courage to realizing the dream.</label>
                         <select class="form-control" id="Q8">
@@ -105,6 +112,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q9"><h5>Question 9:</h5> You value friendship the most.</label>
                         <select class="form-control" id="Q9">
@@ -114,6 +122,7 @@
                         <option>4</option>
                         <option>5 (Strongly Agree)</option>
                         </select>
+                        <br>
 
                         <label for="Q10"><h5>Question 10:</h5> I wish I had someone with whom I could share my true thoughts and feelings.</label>
                         <select class="form-control" id="Q10">
@@ -127,7 +136,7 @@
                 </form>
                     
                 <!-- Button trigger modal -->
-                <button type="submit" class="btn btn-primary btn-lg submit" data-toggle="modal" data-target="#friendModal"><span class="far fa-check-square"></span>
+                <button type="submit" class="btn btn-primary btn-lg submit" data-target="#friendModal"><span class="far fa-check-square"></span>
                     Submit
                 </button>
 
@@ -174,112 +183,136 @@
 
     $(".submit").on("click", function(event) {
         event.preventDefault();
+
+        // Running form validation
+        validateForm();
         
-        // Grabbing form elements
-        var name = $("#nameFormInput").val().trim();
-        var img = $("#photoFormInput").val().trim();
-        var Q1 = $("#Q1").val().substr(0, 1);
-        var Q2 = $("#Q2").val().substr(0, 1);
-        var Q3 = $("#Q3").val().substr(0, 1);
-        var Q4 = $("#Q4").val().substr(0, 1);
-        var Q5 = $("#Q5").val().substr(0, 1);
-        var Q6 = $("#Q6").val().substr(0, 1);
-        var Q7 = $("#Q7").val().substr(0, 1);
-        var Q8 = $("#Q8").val().substr(0, 1);
-        var Q9 = $("#Q9").val().substr(0, 1);
-        var Q10 = $("#Q10").val().substr(0, 1);
-
-        // Putting Question Results into array
-        var userAns = [Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10];
- 
-        // Putting form elements into object to post
-        var newFriends = {
-        friendName: name,
-        friendPhoto: img,
-        friendScores: userAns
-        };
-
-        // Posting user inputs to API
-        $.post("/api/friends", newFriends,
-            function(data) {
-                if (data) {
-                    console.log("User Input: " + newFriends);
-                    clearForm();
-                }          
-        });
-
-        runFriendQuery();
-
-        // Clear the form when submitting
-        function clearForm() {
-                $("#nameFormInput").val("");
-                $("#photoFormInput").val("");
-                $("#Q1").val("");
-                $("#Q2").val("");
-                $("#Q3").val("");
-                $("#Q4").val("");
-                $("#Q5").val("");
-                $("#Q6").val("");
-                $("#Q7").val("");
-                $("#Q8").val("");
-                $("#Q9").val("");
-                $("#Q10").val("");
+        // Form validation function for inputs
+        function validateForm() {
+            var nameInput = document.forms["user-form"]["nameFormInput"].value;
+            var imgInput = document.forms["user-form"]["photoFormInput"].value;
+            
+            // If required inputs are blank, do not allow app to run until input is provided
+            if (nameInput === "" || imgInput === "") {
+                alert("Input is required");
+                return false;
+                validateForm();              
+            } else {
+                appRun();
+                var options = {
+                    'show' : true
+                };
+                $('#friendModal').modal(options);
             };
-         
-        function runFriendQuery(){
-            // Use AJAX function to get data from friends API 
-            $.ajax({ url: "/api/friends", method: "GET" })
-            .then(function(friendData) {
+        };
+        
+        // Function for running the application
+        function appRun() {
+            // Grabbing form elements
+            var name = $("#nameFormInput").val().trim();
+            var img = $("#photoFormInput").val().trim();
+            var Q1 = $("#Q1").val().substr(0, 1);
+            var Q2 = $("#Q2").val().substr(0, 1);
+            var Q3 = $("#Q3").val().substr(0, 1);
+            var Q4 = $("#Q4").val().substr(0, 1);
+            var Q5 = $("#Q5").val().substr(0, 1);
+            var Q6 = $("#Q6").val().substr(0, 1);
+            var Q7 = $("#Q7").val().substr(0, 1);
+            var Q8 = $("#Q8").val().substr(0, 1);
+            var Q9 = $("#Q9").val().substr(0, 1);
+            var Q10 = $("#Q10").val().substr(0, 1);
 
-                // Log the friendData to console to show up as an object
-                console.log("All friends data from Friend API: " + friendData);
+            // Putting Question Results into array
+            var userAns = [Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10];
+    
+            // Putting form elements into object to post
+            var newFriends = {
+            friendName: name,
+            friendPhoto: img,
+            friendScores: userAns
+            };
 
-                // Array that holds the final Total Difference Scores between the user and each of the friends in the friends API
-                var comparisonArr = [];
-
-                // Loop through and capture each of the friend scores within the friends API into an array
-                for (var i = 0; i < friendData.length; i++) {
-                    //console.log(friendData[i].friendScores)
-                    var userAnsArr = userAns;
-                    var friendAnsArr = friendData[i].friendScores;
-                    
-                    // Difference calculations between user and each friend score within the friends API
-                    var diffArr = [];
-                    for(j = 0; j < userAnsArr.length; j++) {
-                        diffArr.push(Math.abs(userAnsArr[j] - friendAnsArr[j]));
-                    };
-
-                    //console.log(diffArr);
-
-                    // Summation of the differences to calculate the overall Total Difference score between the user and friends within the friends API
-                    var totalDiff = diffArr.reduce(add, 0);
-                    function add(a, b) {
-                        return a + b;
-                    };
-                    console.log("Total Difference Score: " + totalDiff);
-                    
-                    // Pushing the final Total Difference score to an array
-                    comparisonArr.push(totalDiff);
-                };
-
-                // Determining closest match to the user with the least amount of difference (in the final array of scores) and determining the index of the match that's not 0
-                function indexOfSmallest(comparisonArr) {
-                    var min = Math.min.apply(null, comparisonArr);
-                    console.log("Index of best match: " + min);
-                    console.log("Best Matched Friend: " + friendData[min]);
-                    console.log("Best Matched Friend name: " + friendData[min].friendName);
-                    console.log("Best Matched Friend image: " + friendData[min].friendPhoto);
-
-                    // Appending friend match result to modal
-                    $("#friendModalMatch").append(friendData[min].friendName);
-                    $("#friendModalImgLink").attr("src", friendData[min].friendPhoto);  
-
-                };
-
-                //console.log("TotalcomparisonArr);
-                indexOfSmallest (comparisonArr);
-
+            // Posting user inputs to API
+            $.post("/api/friends", newFriends,
+                function(data) {
+                    if (data) {
+                        console.log(newFriends);
+                        clearForm();
+                    }          
             });
+
+            runFriendQuery();
+
+            // Clear the form when submitting
+            function clearForm() {
+                    $("#nameFormInput").val("");
+                    $("#photoFormInput").val("");
+                    $("#Q1").val("");
+                    $("#Q2").val("");
+                    $("#Q3").val("");
+                    $("#Q4").val("");
+                    $("#Q5").val("");
+                    $("#Q6").val("");
+                    $("#Q7").val("");
+                    $("#Q8").val("");
+                    $("#Q9").val("");
+                    $("#Q10").val("");
+                };
+            
+            function runFriendQuery(){
+                // Use AJAX function to get data from friends API 
+                $.ajax({ url: "/api/friends", method: "GET" })
+                .then(function(friendData) {
+
+                    // Log the friendData to console to show up as an object
+                    console.log(friendData);
+
+                    // Array that holds the final Total Difference Scores between the user and each of the friends in the friends API
+                    var comparisonArr = [];
+
+                    // Loop through and capture each of the friend scores within the friends API into an array
+                    for (var i = 0; i < friendData.length; i++) {
+                        //console.log(friendData[i].friendScores)
+                        var userAnsArr = userAns;
+                        var friendAnsArr = friendData[i].friendScores;
+                        
+                        // Difference calculations between user and each friend score within the friends API
+                        var diffArr = [];
+                        for(j = 0; j < userAnsArr.length; j++) {
+                            diffArr.push(Math.abs(userAnsArr[j] - friendAnsArr[j]));
+                        };
+
+                        //console.log(diffArr);
+
+                        // Summation of the differences to calculate the overall Total Difference score between the user and friends within the friends API
+                        var totalDiff = diffArr.reduce(add, 0);
+                        function add(a, b) {
+                            return a + b;
+                        };
+                        console.log("Total Difference Score: " + totalDiff);
+                        
+                        // Pushing the final Total Difference score to an array
+                        comparisonArr.push(totalDiff);
+                    };
+
+                    // Determining closest match to the user with the least amount of difference (in the final array of scores) and determining the index of the match that's not 0
+                    function indexOfSmallest(comparisonArr) {
+                        var min = Math.min.apply(null, comparisonArr);
+                        console.log("Index of best match: " + min);
+                        console.log(friendData[min]);
+                        console.log("Best Matched Friend name: " + friendData[min].friendName);
+                        console.log("Best Matched Friend image: " + friendData[min].friendPhoto);
+
+                        // Appending friend match result to modal
+                        $("#friendModalMatch").append(friendData[min].friendName);
+                        $("#friendModalImgLink").attr("src", friendData[min].friendPhoto);  
+
+                    };
+
+                    //console.log("TotalcomparisonArr);
+                    indexOfSmallest (comparisonArr);
+                });
+            };
         };
     });
 </script>

@@ -33,10 +33,14 @@ Express is used to handle routing and is deployed to Heroku for users to fill ou
 3. jQuery
 4. Node.js
 5. NPMs and APIs: Express npm
+6. Heroku Cloud Platform
 
 - - -
 ### Repository
 * https://github.com/rosyming/Friend-Finder
+
+### Heroku Domain
+* https://stark-coast-23135.herokuapp.com/
 
 
 
