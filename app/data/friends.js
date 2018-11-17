@@ -16,6 +16,21 @@ var tableArray = [
         "4",
         "4"]
     },
+    {
+      friendName: "Mary Choi",
+      friendPhoto: "https://www.dailydot.com/wp-content/uploads/c4d/5f/a5946cf9bb5108af3231a2fc0232ef00.jpg",
+      friendScores: [
+        "3",
+        "3",
+        "4",
+        "4",
+        "1",
+        "2",
+        "4",
+        "3",
+        "5",
+        "3"]
+    },
   ];
   
   // Exporting the array to make accessible to other files using require 

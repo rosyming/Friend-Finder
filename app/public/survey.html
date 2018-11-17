@@ -297,15 +297,28 @@
 
                     // Determining closest match to the user with the least amount of difference (in the final array of scores) and determining the index of the match that's not 0
                     function indexOfSmallest(comparisonArr) {
-                        var min = Math.min.apply(null, comparisonArr);
-                        console.log("Index of best match: " + min);
-                        console.log(friendData[min]);
-                        console.log("Best Matched Friend name: " + friendData[min].friendName);
-                        console.log("Best Matched Friend image: " + friendData[min].friendPhoto);
+                        // Preventing the user from being compared to themselves by removing the user's score from the comparison array
+                        var comparisonArrWithoutUser = comparisonArr.pop();
+
+                        // Determining the smallest value within the array (smallest value = least amount of difference)
+                        var min = Math.min(...comparisonArr);
+
+                        // Determining the index of the smallest value in the array
+                        var minArrayIndex = comparisonArr.indexOf(min);
+
+                        // Console logging outputs to make sure logic calculation works
+                        console.log(comparisonArr);
+                        console.log("Lowest score: " + min);                        
+                        console.log("Index of Lowest score: " + minArrayIndex);
+                                              
+                        // Console logging friend match
+                        console.log(friendData[minArrayIndex]);
+                        console.log("Best Matched Friend name: " + friendData[minArrayIndex].friendName);
+                        console.log("Best Matched Friend image: " + friendData[minArrayIndex].friendPhoto);
 
                         // Appending friend match result to modal
-                        $("#friendModalMatch").append(friendData[min].friendName);
-                        $("#friendModalImgLink").attr("src", friendData[min].friendPhoto);  
+                        $("#friendModalMatch").append(friendData[minArrayIndex].friendName);
+                        $("#friendModalImgLink").attr("src", friendData[minArrayIndex].friendPhoto);  
 
                     };
 
